@@ -1,0 +1,41 @@
+{
+  "//": "path: apps/web/package.json | purpose: Website package: landing page, Paystack checkout, webhook and the license API used by the desktop app.",
+  "name": "@ghostdesk/web",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev",
+    "build": "prisma generate && next build",
+    "start": "next start",
+    "typecheck": "tsc --noEmit",
+    "db:push": "prisma db push",
+    "keys": "tsx scripts/generate-keys.ts",
+    "plans": "tsx --env-file=.env scripts/create-plans.ts"
+  },
+  "dependencies": {
+    "@ghostdesk/shared": "workspace:*",
+    "@hookform/resolvers": "^3.9.1",
+    "@prisma/client": "^6.0.0",
+    "@radix-ui/react-dialog": "^1.1.2",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.460.0",
+    "next": "^16.0.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-hook-form": "^7.53.0",
+    "resend": "^4.0.1",
+    "tailwind-merge": "^2.5.4",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.0.0",
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "prisma": "^6.0.0",
+    "tailwindcss": "^4.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0"
+  }
+}

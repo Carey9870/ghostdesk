@@ -1,0 +1,26 @@
+/* path: apps/web/src/app/globals.css */
+/* purpose: Tailwind v4 entry, the light landing-page theme and the ambient colour blobs behind the page. */
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-bricolage), "Segoe UI", system-ui, sans-serif;
+  --color-paper: #f6f3ff;
+  --color-ink: #1d1a33;
+  --color-mute: #4a4666;
+  --color-violet: #6c4df0;
+}
+
+html { scroll-behavior: smooth; scroll-padding-top: 80px; background: var(--color-paper); }
+body { color: var(--color-ink); font-family: var(--font-sans); -webkit-font-smoothing: antialiased; }
+:focus-visible { outline: 2px solid var(--color-violet); outline-offset: 2px; }
+
+.blob { position: absolute; border-radius: 9999px; filter: blur(90px); opacity: .6; pointer-events: none; animation: drift 20s ease-in-out infinite alternate; }
+@keyframes drift { to { transform: translate(60px, 40px) scale(1.12); } }
+@media (prefers-reduced-motion: reduce) { .blob { animation: none; } html { scroll-behavior: auto; } }
+
+/* Long-form legal pages */
+.legal h2 { margin: 2rem 0 .5rem; font-size: 1.35rem; font-weight: 600; letter-spacing: -.01em; }
+.legal p, .legal li { color: var(--color-mute); line-height: 1.75; }
+.legal p { margin: .6rem 0; }
+.legal ul { margin: .6rem 0; padding-left: 1.25rem; list-style: disc; }
+.legal a { color: var(--color-violet); text-decoration: underline; }

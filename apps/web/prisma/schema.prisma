@@ -1,0 +1,64 @@
+// path: apps/web/prisma/schema.prisma
+// purpose: Database schema: licenses, device activations, payments and webhook idempotency records. No user files or vault data are ever stored.
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  NON_RENEWING
+  ATTENTION
+  DISABLED
+}
+
+model License {
+  id               String             @id @default(cuid())
+  key              String             @unique
+  email            String
+  plan             String
+  customerCode     String
+  subscriptionCode String?            @unique
+  emailToken       String?
+  status           SubscriptionStatus @default(ACTIVE)
+  accessUntil      DateTime
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  activations      Activation[]
+  payments         Payment[]
+
+  @@index([customerCode, plan])
+  @@index([email])
+}
+
+model Activation {
+  id          String   @id @default(cuid())
+  licenseId   String
+  license     License  @relation(fields: [licenseId], references: [id], onDelete: Cascade)
+  deviceId    String
+  firstSeenAt DateTime @default(now())
+  lastSeenAt  DateTime @default(now())
+
+  @@unique([licenseId, deviceId])
+}
+
+model Payment {
+  id        String   @id @default(cuid())
+  reference String   @unique
+  licenseId String
+  license   License  @relation(fields: [licenseId], references: [id], onDelete: Cascade)
+  amount    Int
+  currency  String
+  paidAt    DateTime
+  createdAt DateTime @default(now())
+}
+
+model WebhookEvent {
+  id         String   @id
+  type       String
+  receivedAt DateTime @default(now())
+}

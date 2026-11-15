@@ -1,0 +1,27 @@
+/* path: apps/desktop/src/styles.css */
+/* purpose: Tailwind v4 entry and the GhostDesk dark theme tokens (colours follow the vault reference screenshot). */
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  --color-bg: #070b14;
+  --color-panel: #0a1120;
+  --color-field: #0e1626;
+  --color-line: #1d2a44;
+  --color-edge: #2a3957;
+  --color-ink: #e8edf7;
+  --color-mute: #8a96ad;
+  --color-cyan: #22d3ee;
+  --color-pink: #f0245f;
+}
+
+html, body, #root { height: 100%; }
+body {
+  margin: 0;
+  background: radial-gradient(1100px 560px at 15% -10%, #13213b 0, var(--color-bg) 62%) fixed;
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+:focus-visible { outline: 2px solid var(--color-cyan); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { * { animation-duration: .01ms !important; transition-duration: .01ms !important; } }

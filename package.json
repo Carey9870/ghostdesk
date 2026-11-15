@@ -1,0 +1,16 @@
+{
+  "//": "path: package.json | purpose: pnpm + Turborepo workspace root for the GhostDesk monorepo (desktop app, website with license API, shared package).",
+  "name": "ghostdesk",
+  "private": true,
+  "packageManager": "pnpm@12.18.0",
+  "scripts": {
+    "dev:desktop": "pnpm --filter @ghostdesk/desktop tauri dev",
+    "dev:web": "pnpm --filter @ghostdesk/web dev",
+    "build": "turbo run build",
+    "typecheck": "turbo run typecheck",
+    "keys": "pnpm --filter @ghostdesk/web keys",
+    "plans": "pnpm --filter @ghostdesk/web plans",
+    "installers:local": "bash scripts/copy-installers.sh"
+  },
+  "devDependencies": { "turbo": "^2.3.0", "typescript": "^5.6.0" }
+}

@@ -1,0 +1,37 @@
+{
+  // path: apps/desktop/src-tauri/tauri.conf.json5
+  // purpose: Tauri application configuration: window, strict CSP, plugin permissions and bundling.
+  "$schema": "https://schema.tauri.app/config/2",
+  productName: "GhostDesk",
+  version: "1.0.0",
+  identifier: "app.ghostdesk.desktop",
+  build: {
+    beforeDevCommand: "pnpm dev",
+    devUrl: "http://localhost:1420",
+    beforeBuildCommand: "pnpm build",
+    frontendDist: "../dist",
+  },
+  app: {
+    windows: [
+      { label: "main", title: "GhostDesk", width: 1180, height: 760, minWidth: 360, minHeight: 560, resizable: true },
+    ],
+    security: {
+      // Everything is local: the webview never talks to the network. License checks run in Rust.
+      csp: "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' blob:; frame-src blob:; worker-src 'self' blob:; connect-src ipc: http://ipc.localhost; object-src 'none'; base-uri 'none'",
+      devCsp: null,
+      capabilities: [
+        {
+          identifier: "main-window",
+          description: "Permissions for the GhostDesk main window",
+          windows: ["main"],
+          permissions: ["core:default", "core:event:default", "core:webview:default", "dialog:default", "opener:default"],
+        },
+      ],
+    },
+  },
+  bundle: {
+    active: true,
+    targets: "all",
+    icon: ["icons/32x32.png", "icons/128x128.png", "icons/128x128@2x.png", "icons/icon.icns", "icons/icon.ico"],
+  },
+}
