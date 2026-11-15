@@ -59,6 +59,7 @@ const emailSchema = z.object({ email: z.string().trim().email('Enter a valid ema
 function PricingDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (o: boolean) => void }) {
   const [plan, setPlan] = useState<PlanId>('yearly');
   const [busy, setBusy] = useState(false);
+  const [paying, setPaying] = useState(false);
   const { register, handleSubmit, setError, formState: { errors } } = useForm<{ email: string }>({ resolver: zodResolver(emailSchema), defaultValues: { email: '' } });
 
   const perDay = Math.round(PLANS[plan].cents / PLANS[plan].days);
@@ -71,19 +72,21 @@ function PricingDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (o
       const data = (await res.json()) as { accessCode?: string; reference?: string; error?: string };
       if (!res.ok || !data.accessCode) throw new Error(data.error ?? 'We couldn’t start checkout.');
       await loadPaystack();
+      setPaying(true); // hide our dialog: while open it blocks clicks inside Paystack's popup
       new window.PaystackPop!().resumeTransaction(data.accessCode, {
         onSuccess: (tx) => { window.location.href = `/welcome?reference=${encodeURIComponent(tx.reference ?? data.reference ?? '')}`; },
-        onCancel: () => setBusy(false),
-        onError: () => { setBusy(false); setError('email', { message: 'The payment couldn’t be completed. Try again.' }); },
+        onCancel: () => { setPaying(false); setBusy(false); },
+        onError: () => { setPaying(false); setBusy(false); setError('email', { message: 'The payment couldn’t be completed. Try again.' }); },
       });
     } catch (e) {
+      setPaying(false);
       setBusy(false);
       setError('email', { message: e instanceof Error ? e.message : 'Something went wrong. Try again.' });
     }
   });
 
   return (
-    <Dialog.Root open={open} onOpenChange={onOpenChange}>
+    <Dialog.Root open={open && !paying} onOpenChange={onOpenChange}>
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 z-50 bg-ink/60 backdrop-blur-sm" />
         <Dialog.Content className="fixed left-1/2 top-1/2 z-50 max-h-[92dvh] w-[min(440px,94vw)] -translate-x-1/2 -translate-y-1/2 overflow-y-auto rounded-3xl bg-white p-6 text-ink shadow-2xl">
