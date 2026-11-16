@@ -11,7 +11,7 @@
     "typecheck": "tsc --noEmit",
     "db:push": "prisma db push",
     "keys": "tsx scripts/generate-keys.ts",
-    "plans": "tsx --env-file=.env scripts/create-plans.ts"
+    "plans": "tsx --env-file=.env scripts/verify-plans.ts"
   },
   "dependencies": {
     "@ghostdesk/shared": "workspace:*",
