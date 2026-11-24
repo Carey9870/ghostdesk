@@ -21,6 +21,7 @@ export default function Privacy() {
         <li><b>Purchase details:</b> your email address, your Paystack customer code, transaction references, the plan you chose, amounts, dates and subscription status. Your card details are entered into Paystack and are never seen or stored by us.</li>
         <li><b>License details:</b> your license key and a random device identifier that the app creates for itself (it is not derived from your hardware or personal information), with the dates each device first and last contacted us. This lets us enforce the three-device limit.</li>
         <li><b>Technical data:</b> your IP address and basic request information in our server logs and rate limiting, used to keep the service secure and to troubleshoot problems.</li>
+        <li><b>Website analytics:</b> when you visit our website we record the pages you view, the website you came from, an approximate location (country and city, derived from your IP address at the edge and not stored with it), your device type, browser and system, and how long you stay on a page. We do not store your IP address and we use no cookies for this. A salted hash that changes every day lets us count visitors within one day and cannot be reversed. We honour your browser’s Do Not Track setting. The GhostDesk app itself sends us no analytics.</li>
         <li><b>Messages you send us:</b> if you contact support, we keep the correspondence.</li>
       </ul>
       <p>The website does not use advertising or tracking cookies.</p>

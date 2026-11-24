@@ -4,6 +4,7 @@ import { createPrivateKey, randomBytes, sign } from 'node:crypto';
 import { MAX_DEVICES, TOKEN_DAYS } from '@ghostdesk/shared';
 import type { License } from '@prisma/client';
 import { db } from './db';
+import { recordEvent } from './analytics';
 import { env } from './env';
 
 const ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
@@ -34,5 +35,6 @@ export async function registerDevice(licenseId: string, deviceId: string): Promi
   if (existing) { await db.activation.update({ where: { id: existing.id }, data: { lastSeenAt: new Date() } }); return true; }
   if ((await db.activation.count({ where: { licenseId } })) >= MAX_DEVICES) return false;
   await db.activation.create({ data: { licenseId, deviceId } });
+  await recordEvent('license_activated');
   return true;
 }

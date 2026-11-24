@@ -11,16 +11,19 @@
     "typecheck": "tsc --noEmit",
     "db:push": "prisma db push",
     "keys": "tsx scripts/generate-keys.ts",
-    "plans": "tsx --env-file=.env scripts/verify-plans.ts"
+    "plans": "tsx --env-file=.env scripts/verify-plans.ts",
+    "admin:reset": "tsx --env-file=.env scripts/reset-admin.ts"
   },
   "dependencies": {
     "@ghostdesk/shared": "workspace:*",
     "@hookform/resolvers": "^3.9.1",
     "@prisma/client": "^6.0.0",
     "@radix-ui/react-dialog": "^1.1.2",
+    "better-auth": "^1.7.27",
     "clsx": "^2.1.1",
     "lucide-react": "^0.460.0",
     "next": "^16.0.0",
+    "qrcode.react": "^4.2.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-hook-form": "^7.53.0",

@@ -9,6 +9,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { PLAN_IDS, PLANS, type PlanId } from '@ghostdesk/shared';
 import { cn } from '@/lib/cn';
+import { track } from './Analytics';
 
 const Ctx = createContext<{ open: () => void }>({ open: () => undefined });
 export const usePricing = () => useContext(Ctx);
@@ -59,6 +60,7 @@ const emailSchema = z.object({ email: z.string().trim().email('Enter a valid ema
 function PricingDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (o: boolean) => void }) {
   const [plan, setPlan] = useState<PlanId>('yearly');
   const [busy, setBusy] = useState(false);
+  useEffect(() => { if (open) track('pricing_opened'); }, [open]);
   const [paying, setPaying] = useState(false);
   const { register, handleSubmit, setError, formState: { errors } } = useForm<{ email: string }>({ resolver: zodResolver(emailSchema), defaultValues: { email: '' } });
 
@@ -71,6 +73,7 @@ function PricingDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (o
       const res = await fetch('/api/checkout', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, plan }) });
       const data = (await res.json()) as { accessCode?: string; reference?: string; error?: string };
       if (!res.ok || !data.accessCode) throw new Error(data.error ?? 'We couldn’t start checkout.');
+      track('checkout_started', { plan });
       await loadPaystack();
       setPaying(true); // hide our dialog: while open it blocks clicks inside Paystack's popup
       new window.PaystackPop!().resumeTransaction(data.accessCode, {

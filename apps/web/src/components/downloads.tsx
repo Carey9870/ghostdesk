@@ -4,6 +4,7 @@
 import { Download } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { cn } from '@/lib/cn';
+import { track } from './Analytics';
 
 type Os = 'windows' | 'macos' | 'linux';
 const NAMES: Record<Os, string> = { windows: 'Windows', macos: 'macOS', linux: 'Linux' };
@@ -26,6 +27,7 @@ export function DownloadButtons({ className }: { className?: string }) {
       {os === 'mobile' && <p className="text-mute">GhostDesk runs on computers. Open this page on your laptop or desktop to download it.</p>}
       <a
         href={`/download/${mine ?? 'windows'}`}
+        onClick={() => track('download_clicked', { os: mine ?? 'windows' })}
         className="inline-flex h-12 items-center gap-2 rounded-full bg-ink px-7 font-semibold text-white hover:bg-ink/90"
       >
         <Download size={18} />Download for {NAMES[mine ?? 'windows']}
@@ -33,7 +35,7 @@ export function DownloadButtons({ className }: { className?: string }) {
       <p className="text-sm text-mute">
         Also available for{' '}
         {ORDER.filter((o) => o !== (mine ?? 'windows')).map((o, i) => (
-          <span key={o}>{i > 0 && ' and '}<a href={`/download/${o}`} className="underline">{NAMES[o]}</a></span>
+          <span key={o}>{i > 0 && ' and '}<a href={`/download/${o}`} className="underline" onClick={() => track('download_clicked', { os: o })}>{NAMES[o]}</a></span>
         ))}
       </p>
     </div>

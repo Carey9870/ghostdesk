@@ -4,6 +4,7 @@ import { CURRENCY, GRACE_DAYS, PLAN_IDS, PLANS, type PlanId } from '@ghostdesk/s
 import { Prisma, type License } from '@prisma/client';
 import { db } from './db';
 import { addDays, generateKey } from './license';
+import { recordEvent } from './analytics';
 import { sendLicenseEmail } from './mail';
 import { planFromCode, verifyTransaction, type PaystackTransaction } from './paystack';
 
@@ -50,6 +51,7 @@ export async function fulfilCharge(tx: PaystackTransaction): Promise<Fulfilment 
     }
     throw e;
   }
+  await recordEvent('payment_completed', { plan: planId });
   if (result.created) {
     await sendLicenseEmail(result.license.email, result.license.key).catch((e) => console.error('license email failed', e));
   }

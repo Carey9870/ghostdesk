@@ -22,7 +22,8 @@ export default async function Welcome({ searchParams }: { searchParams: Promise<
       {result ? (
         <div>
           <h1 className="text-4xl font-semibold tracking-tight">You’re in.</h1>
-          <p className="mt-3 text-mute">Your license key is below, and we’ve emailed a copy to {result.license.email}.</p>
+          {/* <p className="mt-3 text-mute">Your license key is below, and we’ve emailed a copy to {result.license.email}.</p> */}
+          <p className="mt-3 text-mute">Your license key is below, Make sure to <b className="font-bold text-black text-2xl underline">copy</b> it, store it safely, paste the key when asked.</p>
           <CopyKey value={result.license.key} />
           <p className="mb-5 mt-6 text-mute">Download GhostDesk, open it and paste the key when asked. Keep the key private.</p>
           <DownloadButtons />
