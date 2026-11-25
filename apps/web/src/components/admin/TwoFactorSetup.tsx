@@ -27,6 +27,7 @@ export function TwoFactorSetup({ email }: { email: string }) {
     const { data, error: err } = await authClient.twoFactor.enable({ password });
     setBusy(false);
     if (err || !data) return setError('That password isn’t right.');
+    if (!('totpURI' in data)) return setError('Authenticator-app setup isn’t available. Check the two-factor settings and try again.');
     setUri(data.totpURI); setCodes(data.backupCodes); setStep('scan');
   };
 
